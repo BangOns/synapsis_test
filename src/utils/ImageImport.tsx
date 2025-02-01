@@ -1,10 +1,13 @@
-import ImageBlogs from "@/assets/img/img-blogs.jpeg";
+import Blogs from "@/assets/img/img-blogs.jpeg";
+import Profile from "@/assets/img/img-profile.jpg";
 import { StaticImageData } from "next/image";
 
 type ImageImportType = {
-  ImageBlogs: StaticImageData;
+  Blogs: StaticImageData;
+  Profile: StaticImageData;
 };
 
 export const ImageImport: ImageImportType = {
-  ImageBlogs,
+  Blogs,
+  Profile,
 };

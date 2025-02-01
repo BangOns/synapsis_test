@@ -1,11 +1,5 @@
 import Link from "next/link";
-import {
-  DesktopOutlined,
-  FileOutlined,
-  CloseOutlined,
-  MenuOutlined,
-  SketchOutlined,
-} from "@ant-design/icons";
+import { CloseOutlined, MenuOutlined, SketchOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import { useState } from "react";
 type itemsNavbar = {
@@ -26,7 +20,7 @@ const items: itemsNavbar = [
 export const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
   return (
-    <header className="w-full  shadow-lg p-3 md:p-5 font-poppins">
+    <header className="w-full  shadow-lg p-3 md:p-5 font-poppins ">
       <div className="container mx-auto flex items-center justify-between">
         <section className="md:basis-1/2 w-full flex gap-2  ">
           <SketchOutlined className="text-base md:text-2xl" />
@@ -53,7 +47,7 @@ export const Navbar = () => {
         </Button>
       </div>
       <section
-        className={` fixed md:hidden top-0 left-0 p-4 w-full h-screen bg-white transition-all duration-300 ease-in-out ${
+        className={` z-10 fixed md:hidden top-0 left-0 p-4 w-full h-screen bg-white transition-all duration-300 ease-in-out ${
           showMenu ? "translate-x-0" : "-translate-x-full "
         }`}
       >

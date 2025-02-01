@@ -1,54 +1,31 @@
-import CardComponent from "@/components/ant_design/card";
-import { ImageImport } from "@/utils/ImageImport";
-import { Pagination } from "antd";
+import { CardComponent } from "@/components/Posts/CardComponent";
+import { getPostAll } from "@/lib/react-query/posts";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 
-export default function Home() {
+export async function getServerSideProps() {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["posts", 1],
+    queryFn: async ({ queryKey }) => await getPostAll(queryKey[1]),
+  });
+
+  return { props: { dehydratedState: dehydrate(queryClient) } };
+}
+
+export default function Home({ dehydratedState }: any) {
   return (
     <>
       <header className="w-full ">
         <h1 className="text-2xl font-semibold uppercase">This Blogs</h1>
       </header>
-      <article className="mt-5 w-full gap-5  md:grid lg:grid-cols-3 md:grid-cols-2 flex flex-wrap justify-between ">
-        <CardComponent
-          src={ImageImport.ImageBlogs}
-          title="asdawd"
-          description="asdawdwd"
-        />
-        <CardComponent
-          src={ImageImport.ImageBlogs}
-          title="asdawd"
-          description="asdawdwd"
-        />
-        <CardComponent
-          src={ImageImport.ImageBlogs}
-          title="asdawd"
-          description="asdawdwd"
-        />
-        <CardComponent
-          src={ImageImport.ImageBlogs}
-          title="asdawd"
-          description="asdawdwd"
-        />
-        <CardComponent
-          src={ImageImport.ImageBlogs}
-          title="asdawd"
-          description="asdawdwd"
-        />
-        <CardComponent
-          src={ImageImport.ImageBlogs}
-          title="asdawd"
-          description="asdawdwd"
-        />
-      </article>
-      <section className="mt-5 w-full flex justify-center">
-        <Pagination
-          align="center"
-          defaultCurrent={1}
-          total={50}
-          defaultPageSize={6}
-          onChange={(page) => console.log(page)}
-        />
-      </section>
+      <HydrationBoundary state={dehydratedState}>
+        <CardComponent />
+      </HydrationBoundary>
     </>
   );
 }
