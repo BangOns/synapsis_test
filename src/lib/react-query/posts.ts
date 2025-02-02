@@ -5,7 +5,7 @@ export async function getPostAll(page: any) {
   const response = await instance.get(`/posts?page=${page}&per_page=10`);
   return response.data;
 }
-export async function getPostDetail({ id = "189302" }: { id?: string }) {
-  const response = await instance.get(`/posts/${id}`);
+export async function getPostDetail(id: any) {
+  const response = await instance.get(`/posts/${parseInt(id)}`);
   return response.data;
 }

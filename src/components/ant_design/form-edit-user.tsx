@@ -1,31 +1,38 @@
-import { addUser, getUserAll } from "@/lib/react-query/users";
+import { EditUser, getUserAll, getUserById } from "@/lib/react-query/users";
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { Button, Form, FormProps, Input, Select } from "antd";
+import { useEffect } from "react";
 
 type FormUserProps = {
+  id?: number;
   name?: string;
   email?: string;
   gender?: string;
   status?: string;
 };
-const FormUser = ({
-  page,
+const FormEditUser = ({
+  id,
   isModalOpenSet,
+  page,
   notifSet,
 }: {
-  page?: number;
+  id?: number;
   isModalOpenSet: any;
+  page: number;
   notifSet: any;
 }) => {
   const queryClient = new QueryClient();
-  const { refetch } = useQuery({
+  const [form] = Form.useForm();
+  const { data } = useQuery<FormUserProps>({
+    queryKey: ["form", id],
+    queryFn: async ({ queryKey }) => await getUserById(queryKey[1]),
+  });
+  const { refetch } = useQuery<FormUserProps>({
     queryKey: ["persons", page],
     queryFn: async ({ queryKey }) => await getUserAll(queryKey[1]),
   });
-
-  const [form] = Form.useForm();
   const mutation = useMutation({
-    mutationFn: addUser,
+    mutationFn: EditUser,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["persons", page] });
       form.resetFields();
@@ -33,7 +40,7 @@ const FormUser = ({
       refetch();
       notifSet({
         type: "success",
-        message: "Success Upload Data",
+        message: "Success Update Data",
         show: true,
       });
     },
@@ -41,22 +48,39 @@ const FormUser = ({
       isModalOpenSet(false);
       notifSet({
         type: "error",
-        message: "error Upload Data",
+        message: "Gagal Update Data",
         show: true,
       });
     },
   });
 
   const onFinish: FormProps["onFinish"] = (values: FormUserProps) => {
-    const newData = {
-      id: Math.floor(1000000 + Math.random() * 7000000),
-      ...values,
-    };
-    mutation.mutate(newData);
+    if (JSON.stringify(values) === JSON.stringify(data)) {
+      isModalOpenSet(false);
+      notifSet({
+        type: "error",
+        message: "Equals Data",
+        show: true,
+      });
+    } else {
+      mutation.mutate(values);
+    }
   };
 
+  useEffect(() => {
+    if (data && id) {
+      form.setFieldsValue({
+        id: data.id,
+        name: data.name || "",
+        email: data.email || "",
+        gender: data.gender || "",
+        status: data.status || "",
+      });
+    }
+  }, [data, form, id]);
   return (
     <Form form={form} layout="vertical" onFinish={onFinish}>
+      <Form.Item name="id" hidden></Form.Item>
       <Form.Item
         label="Nama"
         name="name"
@@ -103,4 +127,4 @@ const FormUser = ({
     </Form>
   );
 };
-export default FormUser;
+export default FormEditUser;

@@ -36,11 +36,6 @@ const CommentComponent = (id: CommentComponentProps) => {
     mutations.mutate({ ...id, ...values });
   };
 
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
-    errorInfo
-  ) => {
-    console.log("Failed:", errorInfo);
-  };
   return (
     <article className="border-t border-gray-700 mt-6">
       <header className="text-sm font-semibold mt-4">
@@ -54,7 +49,6 @@ const CommentComponent = (id: CommentComponentProps) => {
           style={{ maxWidth: 600 }}
           initialValues={{ remember: true }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
           <Form.Item<FieldType>

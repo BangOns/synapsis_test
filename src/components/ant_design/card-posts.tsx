@@ -2,7 +2,6 @@ import { Card } from "antd";
 import { StaticImageData } from "next/image";
 import { Image } from "antd";
 import { useRouter } from "next/router";
-import { useState } from "react";
 const { Meta } = Card;
 type CardComponentProps = {
   title: string;

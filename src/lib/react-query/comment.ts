@@ -9,6 +9,6 @@ export async function addCommentByIdPost(data: any) {
   try {
     await instance.post(`/posts/${data.id}/comments`, data);
   } catch (error) {
-    return "error";
+    throw new Error(`${error}`);
   }
 }

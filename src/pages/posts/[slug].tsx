@@ -7,17 +7,13 @@ import Link from "next/link";
 import CommentComponent from "@/components/Posts/CommentComponent";
 import { useQuery } from "@tanstack/react-query";
 import { getPostDetail } from "@/lib/react-query/posts";
-type FieldType = {
-  name: string;
-  email: string;
-  body: string;
-};
 
 const PageBlogDetails = () => {
   const pathName = useRouter();
+
   const { data } = useQuery({
     queryKey: ["detail-post", pathName?.query?.slug],
-    queryFn: ({ queryKey }) => getPostDetail(queryKey[1] as never),
+    queryFn: ({ queryKey }) => getPostDetail(queryKey[1]),
   });
 
   return (
