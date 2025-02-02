@@ -1,7 +1,7 @@
 ## Deployment
 
 This project can be access at :
-synapsis_test.vercel.app
+[synapsis-test-navy.vercel.app](https://synapsis-test-navy.vercel.app/)
 
 ## Tech Stack
 
